@@ -33,8 +33,8 @@ namespace Web_Api.Controllers
 
                 while (rdr.Read())
                 {
-                    output.Add(new BookModel(Int32.Parse(rdr["isbn"].ToString()),
-                        rdr["title"].ToString()));
+                    output.Add(new BookModel(Int32.Parse(rdr["ISBN"].ToString()),
+                        rdr["Title"].ToString()));
                 }
 
             }

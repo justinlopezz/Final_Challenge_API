@@ -51,47 +51,34 @@ namespace Web_Api.Controllers
             }
 
             // GET: api/Borrowers/5
-            public string Get(int id)
+            public IEnumerable<BookModel> Get(int id)
             {
                 SqlConnection conn = DBConnection.GetConnection();
                 SqlCommand cmd;
                 SqlDataReader rdr;
-                String query;
-                String output = "";
-
+                string query;
+                List<BookModel> output = new List<BookModel>();
                 try
                 {
                     conn.Open();
-
-
-                    query = "select * from Borrower where id =" + id;
+                    query = "select * from Books where borrower = " + id;
                     cmd = new SqlCommand(query, conn);
-
                     rdr = cmd.ExecuteReader();
-
                     while (rdr.Read())
                     {
-                        output = output + "{PK: " + rdr.GetValue(0)
-                                     + ", surname: " + rdr.GetValue(1) + ""
-                                     + ", firstname: " + rdr.GetValue(2) + ""
-                                     + ", DOB: " + rdr.GetValue(3) + "}";
+                        output.Add(new BookModel(Int32.Parse(rdr["ISBN"].ToString()),
+                                                    rdr["title"].ToString()));
                     }
-
                 }
                 catch (Exception e)
                 {
-                    output = "";
-                    output = output + e.Message;
-
+                    throw e;
                 }
                 finally
                 {
                     if (conn.State == System.Data.ConnectionState.Open)
-                    {
                         conn.Close();
-                    }
                 }
-
                 return output;
             }
 

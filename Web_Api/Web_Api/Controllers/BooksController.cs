@@ -69,9 +69,9 @@ namespace Web_Api.Controllers
                 while (rdr.Read())
                 {
                     output = output + ("{ISBN: " + rdr.GetValue(0)
-                                 + ", surname: " + rdr.GetValue(1) + "\""
-                                 + ", firstname: " + rdr.GetValue(2) + ""
-                                 + ", title: " + rdr.GetValue(1) + "}");
+                                 + ", Surname: " + rdr.GetValue(1) + "\""
+                                 + ", Firstname: " + rdr.GetValue(2) + ""
+                                 + ", Title: " + rdr.GetValue(1) + "}");
                 }
 
             }

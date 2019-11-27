@@ -19,6 +19,7 @@ namespace Web_Api.Controllers
             SqlCommand cmd;
             SqlDataReader rdr;
             String query;
+
             List<BorrowedBookModel> output = new List<BorrowedBookModel>();
 
             try
@@ -26,16 +27,23 @@ namespace Web_Api.Controllers
                 conn.Open();
 
 
-                query = "select isbn, title, borrower from Books where borrower is not null";
+                query = "select * " +
+                    "from Books " +
+                    "inner join Borrower on Books.Borrower = Borrower.id " +
+                    "where Books.Borrower is not null";
                 cmd = new SqlCommand(query, conn);
 
                 rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
-                    output.Add(new BorrowedBookModel(Int32.Parse(rdr["isbn"].ToString()),
-                        rdr["title"].ToString(),
-                        Int32.Parse(rdr["borrower"].ToString())));
+                    output.Add(new BorrowedBookModel(Int32.Parse(rdr["ISBN"].ToString()),
+                                                     rdr["Title"].ToString(),
+                                                     Int32.Parse(rdr["ID"].ToString()),
+                                                     rdr["Surname"].ToString(),
+                                                     rdr["Firstname"].ToString(),
+                                                     rdr["DOB"].ToString()));
+
                 }
 
             }
@@ -58,53 +66,53 @@ namespace Web_Api.Controllers
         }
 
         // GET: api/BorrowedBooks/5
-        public IEnumerable<BorrowedBookModel> Get(int id)
+        public string Get(int id)
         {
-            SqlConnection conn = DBConnection.GetConnection();
-            SqlCommand cmd;
-            SqlDataReader rdr;
-            String query;
-            List<BorrowedBookModel> output = new List<BorrowedBookModel>();
+            //SqlConnection conn = DBConnection.GetConnection();
+            //SqlCommand cmd;
+            //SqlDataReader rdr;
+            //String query;
+            //List<BorrowedBookModel> output = new List<BorrowedBookModel>();
 
-            int output1 = 0;
-            string output2 = "";
-            int output3 = 0;
+            //int output1 = 0;
+            //string output2 = "";
+            //int output3 = 0;
 
-            try
-            {
-                conn.Open();
-
-
-                query = "select * from Books where borrower =" + id;
-                cmd = new SqlCommand(query, conn);
-
-                rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
-                {
-                    output1 = Int32.Parse(rdr["isbn"].ToString());
-                    output2 = rdr["title"].ToString();
-                    output3 = Int32.Parse(rdr["borrower"].ToString());
-
-                    output.Add(new BorrowedBookModel(output1, output2, output3));
+            //try
+            //{
+            //    conn.Open();
 
 
-                }
+            //    query = "select * from Books where borrower =" + id;
+            //    cmd = new SqlCommand(query, conn);
 
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                if (conn.State == System.Data.ConnectionState.Open)
-                {
-                    conn.Close();
-                }
-            }
+            //    rdr = cmd.ExecuteReader();
 
-            return output;
+            //    while (rdr.Read())
+            //    {
+            //        output1 = Int32.Parse(rdr["ISBN"].ToString());
+            //        output2 = rdr["Title"].ToString();
+            //        output3 = Int32.Parse(rdr["Borrower"].ToString());
+
+            //        output.Add(new BorrowedBookModel(output1, output2, output3));
+
+
+            //    }
+
+            //}
+            //catch (Exception e)
+            //{
+            //    throw e;
+            //}
+            //finally
+            //{
+            //    if (conn.State == System.Data.ConnectionState.Open)
+            //    {
+            //        conn.Close();
+            //    }
+            //}
+
+            return "value";
         }
 
         // POST: api/BorrowedBooks
